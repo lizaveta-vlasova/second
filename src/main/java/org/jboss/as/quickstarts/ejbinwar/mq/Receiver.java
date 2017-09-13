@@ -1,5 +1,8 @@
 package org.jboss.as.quickstarts.ejbinwar.mq;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import org.jboss.as.quickstarts.ejbinwar.dto.TariffDTO;
 import org.jboss.as.quickstarts.ejbinwar.service.TariffService;
 
 import javax.annotation.PostConstruct;
@@ -10,11 +13,13 @@ import javax.jms.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Properties;
 
 @Startup
 @Singleton
-public class NewReceiver implements MessageListener {
+public class Receiver implements MessageListener {
 
     @EJB
     private TariffService tariffService;
@@ -60,13 +65,25 @@ public class NewReceiver implements MessageListener {
     public void onMessage(Message message) {
         System.out.println("Получено");
         TextMessage textMessage = (TextMessage) message;
-        String text="";
+//        List<TariffDTO> tariffDTOS = (List<TariffDTO>)
+        String textListTariff = "";
+        try {
+            textListTariff = textMessage.getText();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+       /* String text="";
         try {
             text = textMessage.getText();
         } catch (JMSException e) {
             e.printStackTrace();
-        }
-        tariffService.sendToClient(text);
+        }*/
+        Gson gson = new Gson();
+
+        Type listType = new TypeToken<List<TariffDTO>>() {}.getType();
+
+        List<TariffDTO> tariffDTOS = new Gson().fromJson(textListTariff, listType);
+        tariffService.sendToClient(tariffDTOS);
         System.out.println("Обновлено");
     }
 

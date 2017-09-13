@@ -1,6 +1,7 @@
 package org.jboss.as.quickstarts.ejbinwar.controller;
 
 import org.jboss.as.quickstarts.ejbinwar.domain.Tariff;
+import org.jboss.as.quickstarts.ejbinwar.dto.TariffDTO;
 import org.jboss.as.quickstarts.ejbinwar.json.JSONEncoder;
 import org.jboss.as.quickstarts.ejbinwar.service.SessionRegistry;
 
@@ -36,8 +37,8 @@ public class TariffWSEndpoint {
         sessionRegistry.getAll().forEach(session -> session.getAsyncRemote().sendObject(tariffs));
     }*/
 
-    public void send(String text) {
-        sessionRegistry.getAll().forEach(session -> session.getAsyncRemote().sendObject(text));
+    public void send(List<TariffDTO> tariffDTOS) {
+        sessionRegistry.getAll().forEach(session -> session.getAsyncRemote().sendObject(tariffDTOS));
     }
 
     @OnMessage
