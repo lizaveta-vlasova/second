@@ -25,8 +25,8 @@ app.controller('TariffController', ['$http','$scope', function ($http, $scope) {
         ctrl.tariff = JSON.parse(event.data);
         $scope.$apply();
         // location.reload();
-/*        $http.get('/rest/tariff/all').success(function (data) {
-            ctrl.tariff = data;
-        });*/
+        /*        $http.get('/rest/tariff/all').success(function (data) {
+         ctrl.tariff = data;
+         });*/
     };
 }]);
