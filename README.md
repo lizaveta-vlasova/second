@@ -1,1 +1,2 @@
-# second
+# mobile-application
+Java School Project
